@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.cxmscb.cxm.progressbutton.MainActivity">
+
+    <com.cxmscb.cxm.progressbutton.ProgressButton
+        android:layout_centerInParent="true"
+        android:id="@+id/pb"
+        android:layout_margin="80dp"
+        app:progressColor="#c3762d"
+        app:progressBgColor="#ff80d0"
+        app:buttonNormalColor="#ff80d0"
+        app:buttonPressedColor="#a083d2"
+        app:buttonCornerRadius="30dp"
+        app:showProgressNum="true"
+        android:textColor="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="添 加" />
+</RelativeLayout>
