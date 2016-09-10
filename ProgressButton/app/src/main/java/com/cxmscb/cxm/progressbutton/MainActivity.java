@@ -5,6 +5,7 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,7 +38,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 progressButton.setText("完 成");
-               // progressButton.initState();
+               //progressButton.initState(); initial the state of progressbtn
+                Toast.makeText(MainActivity.this,"添加完成",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -60,5 +62,11 @@ public class MainActivity extends AppCompatActivity {
                 handler.sendMessage(msg);
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacksAndMessages(null);
     }
 }

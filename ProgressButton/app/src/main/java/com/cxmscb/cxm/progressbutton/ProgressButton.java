@@ -9,7 +9,6 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.Button;
 
 /**
@@ -31,11 +30,6 @@ public class ProgressButton extends Button {
 
 
 
-    public ProgressButton(Context context) {
-        super(context);
-        init(context, null);
-    }
-
     public ProgressButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
@@ -55,9 +49,9 @@ public class ProgressButton extends Button {
     private void init(Context context,AttributeSet attributeSet) {
 
         mNormalDrawable = new StateListDrawable();
-        mProgressDrawable = (GradientDrawable) getDrawable(
+        mProgressDrawable = (GradientDrawable)getResources().getDrawable(
                 R.drawable.rect_progress).mutate();
-        mProgressDrawableBg = (GradientDrawable) getDrawable(
+        mProgressDrawableBg = (GradientDrawable)getResources().getDrawable(
                 R.drawable.rect_progressbg).mutate();
 
         TypedArray attr =  context.obtainStyledAttributes(attributeSet, R.styleable.progressbutton);
@@ -73,8 +67,8 @@ public class ProgressButton extends Button {
 
 
             mNormalDrawable.addState(new int[]{android.R.attr.state_pressed},
-                    createPressedDrawable(attr));
-            mNormalDrawable.addState(new int[] { }, createNormalDrawable(attr));
+                    getPressedDrawable(attr));
+            mNormalDrawable.addState(new int[] { }, getNormalDrawable(attr));
 
 
 
@@ -102,11 +96,7 @@ public class ProgressButton extends Button {
         setBackgroundCompat(mNormalDrawable);
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
 
-    }
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -121,11 +111,12 @@ public class ProgressButton extends Button {
             mProgressDrawable.draw(canvas);
 
             if(mProgress==mMaxProgress) {
+                setBackgroundCompat(mProgressDrawable);
                 isFinish = true;
                 if(onFinishListener!=null) {
                     onFinishListener.onFinish();
                 }
-                Log.i("zz",getMeasuredWidth()+"  ");
+
             }
 
         }
@@ -134,15 +125,15 @@ public class ProgressButton extends Button {
     }
 
     public void setProgress(int progress) {
-        mProgress = progress;
-        if(!isFinish){
 
+        if(!isFinish){
+            mProgress = progress;
             if(isShowProgress) setText(mProgress + " %");
             // 设置背景
             setBackgroundCompat(mProgressDrawableBg);
-
+            invalidate();
         }
-        invalidate();
+
     }
 
 
@@ -151,7 +142,7 @@ public class ProgressButton extends Button {
         return mProgress;
     }
 
-    public void setBackgroundCompat(Drawable drawable) {
+    private void setBackgroundCompat(Drawable drawable) {
         int pL = getPaddingLeft();
         int pT = getPaddingTop();
         int pR = getPaddingRight();
@@ -167,29 +158,18 @@ public class ProgressButton extends Button {
 
 
 
-    private Drawable getDrawable(int id) {
-        return getResources().getDrawable(id);
-    }
-
-
-
-
-    private void initDrawableState() {
-        setBackgroundCompat(mNormalDrawable);
-    }
-
     public void initState(){
-        initDrawableState();
+        setBackgroundCompat(mNormalDrawable);
         isFinish = false;
         mProgress = 0;
     }
 
 
 
-    private Drawable createNormalDrawable( TypedArray attr) {
+    private Drawable getNormalDrawable( TypedArray attr) {
 
         GradientDrawable drawableNormal =
-                (GradientDrawable) getDrawable(R.drawable.rect_normal).mutate();// 修改时就不会影响其它drawable对象的状态
+                (GradientDrawable) getResources().getDrawable(R.drawable.rect_normal).mutate();// 修改时就不会影响其它drawable对象的状态
         drawableNormal.setCornerRadius(cornerRadius); // 设置圆角半径
 
         int defaultNormal =  getResources().getColor(R.color.blue_normal);
@@ -199,9 +179,9 @@ public class ProgressButton extends Button {
         return drawableNormal;
     }
 
-    private Drawable createPressedDrawable( TypedArray attr) {
+    private Drawable getPressedDrawable( TypedArray attr) {
         GradientDrawable drawablePressed =
-                (GradientDrawable) getDrawable(R.drawable.rect_pressed).mutate();// 修改时就不会影响其它drawable对象的状态
+                (GradientDrawable) getResources().getDrawable(R.drawable.rect_pressed).mutate();// 修改时就不会影响其它drawable对象的状态
         drawablePressed.setCornerRadius(cornerRadius);// 设置圆角半径
 
         int defaultPressed = getResources().getColor(R.color.blue_pressed);
